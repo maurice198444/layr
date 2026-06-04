@@ -87,3 +87,61 @@ export const ROOM_ICONS = {
 } as const satisfies Record<string, TemplateResult>;
 
 export type RoomIconName = keyof typeof ROOM_ICONS;
+
+/**
+ * Generic measurement glyphs for value-oriented cards (Hero, Stat, …).
+ * Drawn in the same thin-line style as the room icons; cards apply the
+ * stroke/fill via their own `.glyph-svg` rules.
+ */
+export const GLYPH_ICONS = {
+  bolt: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <path class="filled" d="M13 2 4 14h6l-1 8 9-12h-6z" />
+    </svg>
+  `,
+  drop: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z" />
+    </svg>
+  `,
+  thermometer: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <path d="M12 4a2 2 0 0 1 2 2v7.5a4 4 0 1 1-4 0V6a2 2 0 0 1 2-2z" />
+      <circle class="filled" cx="12" cy="17" r="2.2" />
+    </svg>
+  `,
+  gauge: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <path d="M4 16a8 8 0 0 1 16 0" />
+      <path d="M12 16l4-4" />
+      <circle class="filled" cx="12" cy="16" r="1.2" />
+    </svg>
+  `,
+  leaf: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <path d="M5 19c0-8 6-13 14-13 0 8-6 13-14 13z" />
+      <path d="M8 16c3-4 6-6 9-7" />
+    </svg>
+  `,
+  sun: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <circle class="filled" cx="12" cy="12" r="3.5" />
+      <path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8" />
+    </svg>
+  `,
+  drops: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <path d="M8 4c2.5 3 4 5 4 7a4 4 0 0 1-8 0c0-2 1.5-4 4-7z" />
+      <path class="filled" d="M17 12c1.4 1.7 2 2.8 2 3.8a2 2 0 0 1-4 0c0-1 .6-2.1 2-3.8z" />
+    </svg>
+  `,
+  default: html`
+    <svg class="glyph-svg" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 8v4l2.5 2.5" />
+    </svg>
+  `,
+} as const satisfies Record<string, TemplateResult>;
+
+export type GlyphIconName = keyof typeof GLYPH_ICONS;
+

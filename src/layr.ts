@@ -7,5 +7,7 @@
  */
 
 import './layr-room-card';
+import './layr-hero-card';
 
 export { LayrRoomCard } from './layr-room-card';
+export { LayrHeroCard } from './layr-hero-card';
