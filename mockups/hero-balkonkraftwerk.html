@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mn-bg:#e6e1d8; --mn-bg-light:#f3eee5; --mn-bg-dark:#cdc5b8;
+    --mn-text:#2d2820; --mn-text-mid:#6d6759; --mn-text-dim:#a39d8f; --mn-text-off:#c0b8a8;
+    --mn-accent:#b8743a; --mn-accent-light:#d6904b; --mn-accent-glow:rgba(184,116,58,.5);
+    --green:#7a8a4e; --green-glow:rgba(122,138,78,.45);
+    --shadow-out:-7px -7px 16px var(--mn-bg-light), 7px 7px 16px var(--mn-bg-dark);
+    --shadow-out-sm:-3px -3px 8px var(--mn-bg-light), 3px 3px 8px var(--mn-bg-dark);
+    --shadow-in:inset -4px -4px 10px var(--mn-bg-light), inset 4px 4px 10px var(--mn-bg-dark);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#ddd6cb;font-family:'Geist','Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .shot{padding:34px;width:620px;background:radial-gradient(120% 120% at 0% 0%, #ece7de 0%, #ddd6cb 55%, #d4cdc0 100%);}
+
+  .card{position:relative;width:552px;padding:24px 26px;border-radius:26px;
+    background:var(--mn-bg);box-shadow:var(--shadow-out);color:var(--mn-text);overflow:hidden;
+    display:grid;grid-template-columns:1fr auto;align-items:stretch;gap:24px;}
+  .card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+    background-image:radial-gradient(circle, var(--mn-bg-dark) 1px, transparent 1.4px);background-size:7px 7px;}
+  .main{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0}
+
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .icon{width:40px;height:40px;border-radius:13px;background:var(--mn-bg);
+    box-shadow:var(--shadow-out-sm);display:grid;place-items:center;color:var(--mn-accent);flex-shrink:0}
+  .icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .icon svg .fill{fill:currentColor;stroke:none}
+  .label{font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--mn-text-mid)}
+  .pill{margin-left:auto;display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;
+    background:var(--mn-bg);box-shadow:var(--shadow-out-sm);font-size:11.5px;font-weight:600;color:var(--green);letter-spacing:.02em}
+  .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 7px var(--green-glow)}
+
+  .value{display:flex;align-items:baseline;gap:7px;line-height:.92;margin-top:4px}
+  .value .num{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:62px;letter-spacing:-.02em;
+    color:var(--mn-text);text-shadow:1px 1px 0 rgba(255,255,255,.35)}
+  .value .unit{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:23px;color:var(--mn-text-mid)}
+
+  .split{display:flex;gap:18px;margin-top:13px}
+  .split .seg{display:flex;flex-direction:column;gap:2px}
+  .split .seg .t{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mn-text-dim)}
+  .split .seg .n{font-family:'Fraunces',Georgia,serif;font-size:16px;color:var(--mn-text)}
+  .split .seg.eigen .n{color:var(--green)}
+  .split .seg.einspeis .n{color:var(--mn-accent)}
+
+  .spark{margin-top:16px;height:46px}
+  .spark svg{width:100%;height:100%;display:block}
+
+  .rail{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;padding-left:24px;flex-shrink:0}
+  .rail::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:2px;
+    background:linear-gradient(var(--mn-bg-dark),var(--mn-bg-light));box-shadow:1px 0 0 rgba(255,255,255,.5)}
+  .stat{display:flex;flex-direction:column;gap:2px;min-width:104px}
+  .stat + .stat{margin-top:13px}
+  .stat .k{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mn-text-dim)}
+  .stat .vv{font-family:'Fraunces',Georgia,serif;font-size:19px;color:var(--mn-text)}
+  .stat .vv b{font-weight:400;color:var(--mn-accent)}
+  .stat .bar{height:4px;border-radius:4px;background:var(--mn-bg);box-shadow:var(--shadow-in);overflow:hidden;margin-top:4px}
+  .stat .bar i{display:block;height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--mn-accent-light),var(--mn-accent));box-shadow:0 0 8px var(--mn-accent-glow)}
+  .stat .bar i.g{background:linear-gradient(90deg,#9aa86a,var(--green));box-shadow:0 0 8px var(--green-glow)}
+</style>
+</head>
+<body>
+<div class="shot"><div class="card">
+  <div class="main">
+    <div class="head">
+      <span class="icon"><svg viewBox="0 0 24 24"><circle class="fill" cx="12" cy="12" r="3.4"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg></span>
+      <span class="label">Balkonkraftwerk</span>
+      <span class="pill"><span class="dot"></span>Erzeugt</span>
+    </div>
+    <div class="value"><span class="num">612</span><span class="unit">W</span></div>
+    <div class="split">
+      <div class="seg eigen"><span class="t">Eigenverbrauch</span><span class="n">292 W</span></div>
+      <div class="seg einspeis"><span class="t">Einspeisung</span><span class="n">320 W</span></div>
+    </div>
+    <div class="spark">
+      <svg viewBox="0 0 300 46" preserveAspectRatio="none">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b8743a" stop-opacity=".32"/><stop offset="1" stop-color="#b8743a" stop-opacity="0"/></linearGradient></defs>
+        <path d="M0,44 L0,42 14,41 28,40 42,36 56,30 70,24 84,20 98,15 112,12 126,11 140,10 154,12 168,9 182,13 196,11 210,16 224,20 238,26 252,31 266,36 280,40 300,42 L300,46 L0,46 Z" fill="url(#g)"/>
+        <polyline points="0,42 14,41 28,40 42,36 56,30 70,24 84,20 98,15 112,12 126,11 140,10 154,12 168,9 182,13 196,11 210,16 224,20 238,26 252,31 266,36 280,40 300,42"
+          fill="none" stroke="#b8743a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          style="filter:drop-shadow(0 0 2px rgba(184,116,58,.5))" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+  </div>
+  <div class="rail">
+    <div class="stat"><span class="k">Heute</span><span class="vv">3,84 kWh</span><div class="bar"><i class="g" style="width:78%"></i></div></div>
+    <div class="stat"><span class="k">Peak heute</span><span class="vv">798 W</span><div class="bar"><i style="width:88%"></i></div></div>
+    <div class="stat"><span class="k">Gespart</span><span class="vv"><b>1,15 €</b></span><div class="bar"><i style="width:64%"></i></div></div>
+    <div class="stat"><span class="k">Autarkie</span><span class="vv">42 %</span><div class="bar"><i class="g" style="width:42%"></i></div></div>
+  </div>
+</div></div>
+</body>
+</html>
