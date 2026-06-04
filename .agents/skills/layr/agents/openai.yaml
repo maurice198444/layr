@@ -1,0 +1,6 @@
+interface:
+  display_name: "Layr"
+  short_description: "Repo-specific patterns and workflows for layr"
+  default_prompt: "Use the layr repo skill to follow existing architecture, testing, and workflow conventions."
+policy:
+  allow_implicit_invocation: true
