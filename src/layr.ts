@@ -8,6 +8,8 @@
 
 import './layr-room-card';
 import './layr-hero-card';
+import './layr-energy-card';
 
 export { LayrRoomCard } from './layr-room-card';
 export { LayrHeroCard } from './layr-hero-card';
+export { LayrEnergyCard } from './layr-energy-card';
