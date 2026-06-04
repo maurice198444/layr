@@ -2175,7 +2175,7 @@ let L = class extends $ {
   }
   setConfig(e) {
     if (!e) throw new Error("Invalid configuration");
-    if (!e.solar_entity && !e.grid_entity && !e.battery_entity)
+    if (!e.solar_entity && !e.grid_entity && !e.battery_entity && !e.battery_charge_entity && !e.battery_discharge_entity)
       throw new Error("Layr Energy Card: configure at least one of solar_entity, grid_entity, battery_entity");
     this._config = { ...e };
   }
@@ -2190,9 +2190,16 @@ let L = class extends $ {
     return e ? X(this.hass.states[e]?.state) : null;
   }
   get _flow() {
-    const e = this._config, t = e.threshold ?? 20, s = Math.max(0, this._num(e.solar_entity) ?? 0), i = this._num(e.house_entity) ?? 0, r = this._num(e.battery_level_entity), n = this._num(e.grid_entity) ?? 0, o = e.grid_export_positive ? -n : n, l = Math.max(0, o), c = Math.max(0, -o), p = this._num(e.battery_entity) ?? 0, u = e.battery_charge_positive ?? !0 ? p : -p, d = Math.max(0, u), v = Math.max(0, -u);
-    let f = "solar";
-    return l > t ? f = "grid" : v > t && (f = "storage"), { mode: f, solar: s, house: i, importW: l, exportW: c, charge: d, discharge: v, soc: r };
+    const e = this._config, t = e.threshold ?? 20, s = Math.max(0, this._num(e.solar_entity) ?? 0), i = this._num(e.house_entity) ?? 0, r = this._num(e.battery_level_entity), n = this._num(e.grid_entity) ?? 0, o = e.grid_export_positive ? -n : n, l = Math.max(0, o), c = Math.max(0, -o);
+    let p, u;
+    if (e.battery_charge_entity || e.battery_discharge_entity)
+      p = Math.max(0, this._num(e.battery_charge_entity) ?? 0), u = Math.max(0, this._num(e.battery_discharge_entity) ?? 0);
+    else {
+      const v = this._num(e.battery_entity) ?? 0, f = e.battery_charge_positive ?? !0 ? v : -v;
+      p = Math.max(0, f), u = Math.max(0, -f);
+    }
+    let d = "solar";
+    return l > t ? d = "grid" : u > t && (d = "storage"), { mode: d, solar: s, house: i, importW: l, exportW: c, charge: p, discharge: u, soc: r };
   }
   // ============================================================
   // RENDER

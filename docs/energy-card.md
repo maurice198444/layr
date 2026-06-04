@@ -29,7 +29,9 @@ That's enough to render the flow diagram and detect the operating mode. Add a `b
 | `solar_entity` | entity_id | — | Current PV generation (W) |
 | `house_entity` | entity_id | — | Current house consumption (W) |
 | `grid_entity` | entity_id | — | Grid power (W) — see [sign conventions](#sign-conventions) |
-| `battery_entity` | entity_id | — | Battery power (W) — charge/discharge |
+| `battery_entity` | entity_id | — | Single signed battery power (W) — charge/discharge via sign |
+| `battery_charge_entity` | entity_id | — | Separate positive-only **charge** power (W) |
+| `battery_discharge_entity` | entity_id | — | Separate positive-only **discharge** power (W) |
 | `battery_level_entity` | entity_id | — | Battery state of charge (%) |
 | `grid_export_positive` | boolean | `false` | If `true`, a **positive** grid value means export |
 | `battery_charge_positive` | boolean | `true` | If `true`, a **positive** battery value means charging |
@@ -46,9 +48,11 @@ At least one of `solar_entity`, `grid_entity`, or `battery_entity` is required. 
 Home Assistant integrations disagree on the sign of grid and battery power, so the card lets you adapt:
 
 - **Grid** — by default a **positive** `grid_entity` value means **import** (drawing from the grid) and a **negative** value means **export** (feed-in). If your sensor is the other way round, set `grid_export_positive: true`.
-- **Battery** — by default a **positive** `battery_entity` value means **charging** and a **negative** value means **discharging**. Flip with `battery_charge_positive: false`.
+- **Battery** — two ways to wire it:
+  - **Single signed sensor:** set `battery_entity`. By default a **positive** value means **charging**, a **negative** value means **discharging**. Flip with `battery_charge_positive: false`.
+  - **Separate sensors:** set `battery_charge_entity` and/or `battery_discharge_entity` (both positive-only watts). These take precedence over `battery_entity` and let the card animate both the charge (Haus→Speicher) and discharge (Speicher→Haus) paths. Common for Anker Solarbank and similar integrations that expose `…_aufladeleistung` / `…_entladeleistung`.
 
-If the headline or the flow direction looks inverted, one of these two flags is what you need.
+If the headline or the flow direction looks inverted, one of these flags is what you need.
 
 ---
 

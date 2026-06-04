@@ -48,11 +48,16 @@ export interface LayrEnergyCardConfig extends LovelaceCardConfig {
   solar_entity?: string;
   house_entity?: string;
   grid_entity?: string;
+  /** Single signed battery power sensor (charge/discharge via battery_charge_positive). */
   battery_entity?: string;
+  /** Separate positive-only charge power sensor (takes precedence over battery_entity). */
+  battery_charge_entity?: string;
+  /** Separate positive-only discharge power sensor (takes precedence over battery_entity). */
+  battery_discharge_entity?: string;
   battery_level_entity?: string;
   /** When true, a positive grid value means export. Default: positive = import. */
   grid_export_positive?: boolean;
-  /** When true (default), a positive battery value means charging. */
+  /** When true (default), a positive battery value means charging. Ignored if split charge/discharge entities are set. */
   battery_charge_positive?: boolean;
   /** Power threshold (W) below which a flow is treated as idle. Default 20. */
   threshold?: number;
@@ -116,7 +121,13 @@ export class LayrEnergyCard extends LitElement {
 
   public setConfig(config: LayrEnergyCardConfig): void {
     if (!config) throw new Error('Invalid configuration');
-    if (!config.solar_entity && !config.grid_entity && !config.battery_entity) {
+    if (
+      !config.solar_entity &&
+      !config.grid_entity &&
+      !config.battery_entity &&
+      !config.battery_charge_entity &&
+      !config.battery_discharge_entity
+    ) {
       throw new Error('Layr Energy Card: configure at least one of solar_entity, grid_entity, battery_entity');
     }
     this._config = { ...config };
@@ -149,10 +160,19 @@ export class LayrEnergyCard extends LitElement {
     const importW = Math.max(0, gridImport);
     const exportW = Math.max(0, -gridImport);
 
-    const battRaw = this._num(c.battery_entity) ?? 0;
-    const battCharge = (c.battery_charge_positive ?? true) ? battRaw : -battRaw; // +charge
-    const charge = Math.max(0, battCharge);
-    const discharge = Math.max(0, -battCharge);
+    // Battery: prefer separate positive-only charge/discharge sensors, else a
+    // single signed sensor interpreted via battery_charge_positive.
+    let charge: number;
+    let discharge: number;
+    if (c.battery_charge_entity || c.battery_discharge_entity) {
+      charge = Math.max(0, this._num(c.battery_charge_entity) ?? 0);
+      discharge = Math.max(0, this._num(c.battery_discharge_entity) ?? 0);
+    } else {
+      const battRaw = this._num(c.battery_entity) ?? 0;
+      const battCharge = (c.battery_charge_positive ?? true) ? battRaw : -battRaw; // +charge
+      charge = Math.max(0, battCharge);
+      discharge = Math.max(0, -battCharge);
+    }
 
     let mode: Mode = 'solar';
     if (importW > th) mode = 'grid';
