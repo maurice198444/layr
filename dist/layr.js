@@ -2393,15 +2393,6 @@ E.styles = q`
       outline: 2px solid var(--status);
       outline-offset: 3px;
     }
-    .layr-energy::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.35;
-      background-image: radial-gradient(circle, var(--mn-bg-dark) 1px, transparent 1.4px);
-      background-size: 7px 7px;
-    }
     .main {
       position: relative;
       z-index: 1;
