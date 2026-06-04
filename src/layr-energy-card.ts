@@ -95,6 +95,9 @@ const NODE_GLYPH: Record<'solar' | 'haus' | 'speicher' | 'netz', SVGTemplateResu
 };
 
 // Diagram geometry (matches the viewBox below).
+const FLOW_W = 344;
+const FLOW_H = 120;
+
 const NODE_POS = {
   solar: { x: 28, y: 54 },
   haus: { x: 172, y: 54 },
@@ -118,10 +121,32 @@ const WIRE = {
 export class LayrEnergyCard extends LitElement {
   @property({ attribute: false }) public hass!: HomeAssistant;
   @state() private _config!: LayrEnergyCardConfig;
+  @state() private _flowScale = 1;
+
+  private _resizeObserver?: ResizeObserver;
 
   constructor() {
     super();
     ensureLayrFonts();
+  }
+
+  // Scale the fixed-size flow diagram down to fit narrow cards.
+  protected updated(): void {
+    if (this._resizeObserver) return;
+    const wrap = this.renderRoot.querySelector('.flow-scale') as HTMLElement | null;
+    if (!wrap || typeof ResizeObserver === 'undefined') return;
+    this._resizeObserver = new ResizeObserver((entries) => {
+      const w = entries[0]?.contentRect.width ?? FLOW_W;
+      const s = Math.min(1, w / FLOW_W);
+      if (Math.abs(s - this._flowScale) > 0.005) this._flowScale = s;
+    });
+    this._resizeObserver.observe(wrap);
+  }
+
+  public disconnectedCallback(): void {
+    super.disconnectedCallback();
+    this._resizeObserver?.disconnect();
+    this._resizeObserver = undefined;
   }
 
   public setConfig(config: LayrEnergyCardConfig): void {
@@ -349,7 +374,8 @@ export class LayrEnergyCard extends LitElement {
     };
 
     return html`
-      <div class="flow">
+      <div class="flow-scale" style="height:${FLOW_H * this._flowScale}px">
+        <div class="flow" style="transform:scale(${this._flowScale})">
         <svg class="wires" viewBox="0 0 344 120" preserveAspectRatio="none">
           ${this._wire(WIRE.solarHaus, wireClass(WIRE.solarHaus))}
           ${this._wire(WIRE.hausSpeicher, wireClass(WIRE.hausSpeicher))}
@@ -365,6 +391,7 @@ export class LayrEnergyCard extends LitElement {
         ${this._node('netz', onNodes.has('netz'), accNode === 'netz')}
         ${this._cap('solar', 'Solar', 76)} ${this._cap('haus', 'Haus', 76)}
         ${this._cap('speicher', 'Speicher', 48)} ${this._cap('netz', 'Netz', 100)}
+        </div>
       </div>
     `;
   }
@@ -503,11 +530,16 @@ export class LayrEnergyCard extends LitElement {
       stroke: none;
     }
     .label {
+      flex: 1;
+      min-width: 0;
       font-size: 12.5px;
       font-weight: 600;
       letter-spacing: 0.13em;
       text-transform: uppercase;
       color: var(--mn-text-mid);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .live {
       margin-left: auto;
@@ -556,7 +588,8 @@ export class LayrEnergyCard extends LitElement {
 
     .split {
       display: flex;
-      gap: 18px;
+      flex-wrap: wrap;
+      gap: 8px 18px;
       margin-top: 11px;
     }
     .split .seg {
@@ -584,11 +617,16 @@ export class LayrEnergyCard extends LitElement {
     }
 
     /* ===== ENERGY FLOW ===== */
+    .flow-scale {
+      width: 100%;
+      margin-top: 18px;
+      overflow: visible;
+    }
     .flow {
       position: relative;
       width: 344px;
       height: 120px;
-      margin-top: 18px;
+      transform-origin: top left;
     }
     .wires {
       position: absolute;
