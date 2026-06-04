@@ -1,0 +1,37 @@
+{
+  "name": "layr-cards",
+  "version": "0.1.0",
+  "description": "Premium Home Assistant cards with the Monolith design aesthetic",
+  "type": "module",
+  "main": "dist/layr.js",
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build",
+    "deploy": "vite build && node scripts/deploy.mjs",
+    "deploy:only": "node scripts/deploy.mjs",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "home-assistant",
+    "homeassistant",
+    "lovelace",
+    "custom-card",
+    "lit",
+    "layr"
+  ],
+  "author": "Maurice Stockfleth",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maurice198444/layr-cards.git"
+  },
+  "dependencies": {
+    "custom-card-helpers": "^1.9.0",
+    "lit": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.11"
+  }
+}
