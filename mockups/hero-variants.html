@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mn-bg:#e6e1d8; --mn-bg-light:#f3eee5; --mn-bg-dark:#cdc5b8;
+    --mn-text:#2d2820; --mn-text-mid:#6d6759; --mn-text-dim:#a39d8f; --mn-text-off:#c0b8a8;
+    --mn-accent:#b8743a; --mn-accent-light:#d6904b; --mn-accent-glow:rgba(184,116,58,.5);
+    --shadow-out:-7px -7px 16px var(--mn-bg-light), 7px 7px 16px var(--mn-bg-dark);
+    --shadow-out-sm:-3px -3px 8px var(--mn-bg-light), 3px 3px 8px var(--mn-bg-dark);
+    --shadow-in:inset -4px -4px 10px var(--mn-bg-light), inset 4px 4px 10px var(--mn-bg-dark);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#ddd6cb;font-family:'Geist','Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+
+  .shot{padding:34px;width:600px;background:
+      radial-gradient(120% 120% at 0% 0%, #ece7de 0%, #ddd6cb 55%, #d4cdc0 100%);}
+
+  .card{
+    position:relative;width:532px;padding:24px 26px;border-radius:26px;
+    background:var(--mn-bg);box-shadow:var(--shadow-out);color:var(--mn-text);overflow:hidden;
+    display:grid;grid-template-columns:1fr auto;align-items:stretch;gap:22px;
+  }
+  /* faint paper grain */
+  .card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+    background-image:radial-gradient(circle, var(--mn-bg-dark) 1px, transparent 1.4px);
+    background-size:7px 7px;}
+  .main{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0}
+
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .icon{width:40px;height:40px;border-radius:13px;background:var(--mn-bg);
+    box-shadow:var(--shadow-out-sm);display:grid;place-items:center;color:var(--mn-accent);flex-shrink:0}
+  .icon svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;
+    stroke-linecap:round;stroke-linejoin:round}
+  .icon svg .fill{fill:currentColor;stroke:none}
+  .label{font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--mn-text-mid)}
+
+  .value{display:flex;align-items:baseline;gap:7px;line-height:.92}
+  .value .num{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:60px;
+    letter-spacing:-.02em;color:var(--mn-text);text-shadow:1px 1px 0 rgba(255,255,255,.35)}
+  .value .unit{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:22px;color:var(--mn-text-mid)}
+  .sub{margin-top:11px;font-family:'Fraunces',Georgia,serif;font-size:14px;color:var(--mn-text-mid)}
+  .sub i{color:var(--mn-text-dim);font-size:12.5px;margin-right:5px}
+
+  /* ---- right rail shared ---- */
+  .rail{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;
+    padding-left:22px;flex-shrink:0}
+  .rail::before{content:"";position:absolute;left:0;top:6px;bottom:6px;width:2px;border-radius:2px;
+    background:linear-gradient(var(--mn-bg-dark),var(--mn-bg-light));box-shadow:1px 0 0 rgba(255,255,255,.5)}
+
+  /* ===== V1 — Energy Rail ===== */
+  .v1 .spark{margin-top:18px;height:54px}
+  .v1 .spark svg{width:100%;height:100%;display:block}
+  .stat{display:flex;flex-direction:column;gap:3px;min-width:96px}
+  .stat + .stat{margin-top:15px}
+  .stat .k{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mn-text-dim)}
+  .stat .vv{font-family:'Fraunces',Georgia,serif;font-size:19px;color:var(--mn-text)}
+  .stat .bar{height:4px;border-radius:4px;background:var(--mn-bg);box-shadow:var(--shadow-in);overflow:hidden;margin-top:3px}
+  .stat .bar i{display:block;height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--mn-accent-light),var(--mn-accent));box-shadow:0 0 8px var(--mn-accent-glow)}
+
+  /* ===== V2 — Arc Gauge ===== */
+  .gauge{position:relative;width:124px;height:124px;display:grid;place-items:center}
+  .gauge svg{transform:rotate(0deg)}
+  .gauge .center{position:absolute;text-align:center}
+  .gauge .center .big{font-family:'Fraunces',Georgia,serif;font-size:23px;color:var(--mn-text);line-height:1}
+  .gauge .center .cap{font-size:9.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--mn-text-dim);margin-top:4px}
+  .v2 .spark{margin-top:16px;height:34px}
+  .v2 .spark svg{width:100%;height:100%;display:block}
+
+  /* ===== V3 — Trend Bars ===== */
+  .delta{display:inline-flex;align-items:center;gap:5px;align-self:flex-end;
+    padding:5px 11px;border-radius:20px;background:var(--mn-bg);box-shadow:var(--shadow-out-sm);
+    font-size:13px;font-weight:600;color:var(--mn-accent);margin-bottom:16px}
+  .delta svg{width:12px;height:12px;fill:var(--mn-accent)}
+  .bars{display:flex;align-items:flex-end;gap:6px;height:90px}
+  .bars .b{width:9px;border-radius:5px;background:var(--mn-bg);box-shadow:var(--shadow-out-sm)}
+  .bars .b.hi{background:linear-gradient(180deg,var(--mn-accent-light),var(--mn-accent));
+    box-shadow:0 0 10px var(--mn-accent-glow),var(--shadow-out-sm)}
+  .ticks{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--mn-text-dim);font-weight:500}
+</style>
+</head>
+<body>
+
+<!-- ============ V1 — ENERGY RAIL ============ -->
+<div class="shot"><div class="card v1">
+  <div class="main">
+    <div class="head">
+      <span class="icon"><svg viewBox="0 0 24 24"><path class="fill" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></span>
+      <span class="label">Stromverbrauch</span>
+    </div>
+    <div class="value"><span class="num">899</span><span class="unit">W</span></div>
+    <div class="sub"><i>Heute</i>2,2 kWh · 0,71 €</div>
+    <div class="spark">
+      <svg viewBox="0 0 300 54" preserveAspectRatio="none">
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#b8743a" stop-opacity=".34"/>
+          <stop offset="1" stop-color="#b8743a" stop-opacity="0"/></linearGradient></defs>
+        <path d="M0,40 L0,38 8,37 16,34 24,33 32,30 40,33 48,31 56,22 64,24 72,20 80,21 88,38 96,39 104,40 112,40 120,28 128,15 136,30 144,12 152,32 160,18 168,33 176,16 184,30 192,26 200,24 208,22 216,21 224,19 232,18 240,17 248,16 256,15 264,14 272,13 280,13 288,12 300,12 L300,54 L0,54 Z" fill="url(#g1)"/>
+        <polyline points="0,38 8,37 16,34 24,33 32,30 40,33 48,31 56,22 64,24 72,20 80,21 88,38 96,39 104,40 112,40 120,28 128,15 136,30 144,12 152,32 160,18 168,33 176,16 184,30 192,26 200,24 208,22 216,21 224,19 232,18 240,17 248,16 256,15 264,14 272,13 280,13 288,12 300,12"
+          fill="none" stroke="#b8743a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          style="filter:drop-shadow(0 0 2px rgba(184,116,58,.5))" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+  </div>
+  <div class="rail">
+    <div class="stat"><span class="k">Peak</span><span class="vv">1,42 kW</span><div class="bar"><i style="width:100%"></i></div></div>
+    <div class="stat"><span class="k">Mittel</span><span class="vv">740 W</span><div class="bar"><i style="width:52%"></i></div></div>
+    <div class="stat"><span class="k">Min</span><span class="vv">210 W</span><div class="bar"><i style="width:15%"></i></div></div>
+  </div>
+</div></div>
+
+<!-- ============ V2 — ARC GAUGE ============ -->
+<div class="shot"><div class="card v2">
+  <div class="main">
+    <div class="head">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 4a2 2 0 0 1 2 2v7.5a4 4 0 1 1-4 0V6a2 2 0 0 1 2-2z"/><circle class="fill" cx="12" cy="17" r="2.2"/></svg></span>
+      <span class="label">Wohnzimmer</span>
+    </div>
+    <div class="value"><span class="num">21,4</span><span class="unit">°C</span></div>
+    <div class="sub"><i>Soll</i>22,0° · Luftfeuchte 47 %</div>
+    <div class="spark">
+      <svg viewBox="0 0 300 34" preserveAspectRatio="none">
+        <polyline points="0,24 30,22 60,23 90,18 120,19 150,14 180,16 210,11 240,13 270,9 300,10"
+          fill="none" stroke="#b8743a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          style="filter:drop-shadow(0 0 2px rgba(184,116,58,.5))" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+  </div>
+  <div class="rail">
+    <div class="gauge">
+      <svg width="124" height="124" viewBox="0 0 124 124">
+        <path d="M22 92 A50 50 0 1 1 102 92" fill="none" stroke="#cdc5b8" stroke-width="11" stroke-linecap="round"/>
+        <path d="M22 92 A50 50 0 1 1 102 92" fill="none" stroke="#b8743a" stroke-width="11" stroke-linecap="round"
+          stroke-dasharray="235" stroke-dashoffset="86"
+          style="filter:drop-shadow(0 0 4px rgba(184,116,58,.45))"/>
+      </svg>
+      <div class="center"><div class="big">64%</div><div class="cap">von Soll</div></div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ============ V3 — TREND BARS ============ -->
+<div class="shot"><div class="card v3">
+  <div class="main">
+    <div class="head">
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z"/></svg></span>
+      <span class="label">Luftfeuchtigkeit</span>
+    </div>
+    <div class="value"><span class="num">58</span><span class="unit">%</span></div>
+    <div class="sub"><i>Taupunkt</i>9,8° · komfortabel</div>
+  </div>
+  <div class="rail">
+    <span class="delta"><svg viewBox="0 0 24 24"><path d="M12 5l7 9h-14z"/></svg>4 %</span>
+    <div class="bars">
+      <div class="b" style="height:38%"></div>
+      <div class="b" style="height:46%"></div>
+      <div class="b" style="height:42%"></div>
+      <div class="b" style="height:58%"></div>
+      <div class="b" style="height:64%"></div>
+      <div class="b" style="height:55%"></div>
+      <div class="b hi" style="height:74%"></div>
+    </div>
+    <div class="ticks"><span>Mo</span><span>So</span></div>
+  </div>
+</div></div>
+
+</body>
+</html>

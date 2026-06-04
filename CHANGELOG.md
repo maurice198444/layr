@@ -4,6 +4,25 @@ All notable changes to Layr will be documented in this file. The format follows 
 
 ## [Unreleased]
 
+### Added
+
+- **Layr Energy Card** — a live energy-flow card for solar + battery setups (Balkonkraftwerk).
+  - Auto-detected operating mode from the flow sensors: Solarbetrieb (green), Speicherbezug (amber), Netzbezug (red)
+  - Animated energy-flow diagram with neumorphic Solar/Haus/Speicher/Netz nodes and glowing particles along the active path
+  - Computed headline + split per mode (e.g. self-consumption vs feed-in)
+  - Configurable stat column (up to four entities with optional bar fill)
+  - Sign-convention flags (`grid_export_positive`, `battery_charge_positive`) and a configurable idle `threshold`
+  - Tap to open more-info (configurable via `tap_action`, keyboard accessible)
+- **Layr Hero Card** — a featured-value display for a single entity.
+  - Large Fraunces headline value with auto-formatted unit and German decimal notation
+  - Optional secondary value with its own label
+  - Optional sparkline drawn from recorder history (lazy fetch, auto-scaled, refreshed every 2 minutes, hidden when no data)
+  - Custom hand-drawn measurement glyphs: bolt, thermometer, drop, drops, gauge, leaf, sun, default
+  - Tap to open more-info (configurable via `tap_action`, keyboard accessible)
+- Shared `src/shared/` design system extracted from the Room Card — Monolith tokens, hand-drawn icons, formatting helpers, and HA utilities — so cards share one visual language.
+- Fraunces/Geist web fonts are now loaded automatically by the cards.
+- Multi-card build: `src/layr.ts` is the single bundle entry that registers every card.
+
 ## [0.1.0] — 2026-06-04
 
 ### Added

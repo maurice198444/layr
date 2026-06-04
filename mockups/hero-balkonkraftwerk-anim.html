@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,400..500&family=Geist:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --mn-bg:#e6e1d8; --mn-bg-light:#f3eee5; --mn-bg-dark:#cdc5b8;
+    --mn-text:#2d2820; --mn-text-mid:#6d6759; --mn-text-dim:#a39d8f;
+    --mn-accent:#b8743a; --mn-accent-light:#d6904b; --mn-accent-glow:rgba(184,116,58,.5);
+    --shadow-out:-7px -7px 16px var(--mn-bg-light), 7px 7px 16px var(--mn-bg-dark);
+    --shadow-out-sm:-3px -3px 8px var(--mn-bg-light), 3px 3px 8px var(--mn-bg-dark);
+    --shadow-in:inset -4px -4px 10px var(--mn-bg-light), inset 4px 4px 10px var(--mn-bg-dark);
+  }
+  .mode-solar   {--status:#6f8a3e; --status-glow:rgba(111,138,62,.55)}
+  .mode-storage {--status:#c2992b; --status-glow:rgba(194,153,43,.55)}
+  .mode-grid    {--status:#a83f33; --status-glow:rgba(168,63,51,.55)}
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#ddd6cb;font-family:'Geist','Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .shot{padding:30px 34px 14px;width:620px;background:radial-gradient(120% 120% at 0% 0%, #ece7de 0%, #ddd6cb 55%, #d4cdc0 100%);}
+  .shot:last-child{padding-bottom:30px}
+
+  .card{position:relative;width:552px;padding:24px 26px;border-radius:26px;
+    background:var(--mn-bg);box-shadow:var(--shadow-out);color:var(--mn-text);overflow:hidden;
+    display:grid;grid-template-columns:1fr auto;align-items:stretch;gap:24px;}
+  .card::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
+    background-image:radial-gradient(circle, var(--mn-bg-dark) 1px, transparent 1.4px);background-size:7px 7px;}
+  .main{position:relative;z-index:1;display:flex;flex-direction:column;min-width:0}
+
+  .head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .icon{width:40px;height:40px;border-radius:13px;background:var(--mn-bg);
+    box-shadow:var(--shadow-out-sm);display:grid;place-items:center;color:var(--mn-accent);flex-shrink:0}
+  .icon svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+  .icon svg .fill{fill:currentColor;stroke:none}
+  .label{font-size:12.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--mn-text-mid)}
+
+  /* ----- live status: flow motif + traffic-light dot ----- */
+  .live{margin-left:auto;display:flex;align-items:center;gap:8px;height:24px}
+  .flow{width:38px;height:24px;opacity:.6}
+  .flow-down{background-image:radial-gradient(circle, var(--status) 1.7px, transparent 2.2px);
+    background-size:12px 12px;animation:flowdown 2s linear infinite;
+    -webkit-mask:linear-gradient(transparent,#000 28%,#000 72%,transparent);mask:linear-gradient(transparent,#000 28%,#000 72%,transparent)}
+  .flow-left{background-image:radial-gradient(circle, var(--status) 1.7px, transparent 2.2px);
+    background-size:12px 12px;animation:flowleft 2s linear infinite;
+    -webkit-mask:linear-gradient(90deg,transparent,#000 28%,#000 72%,transparent);mask:linear-gradient(90deg,transparent,#000 28%,#000 72%,transparent)}
+  @keyframes flowdown{from{background-position:0 0}to{background-position:0 12px}}
+  @keyframes flowleft{from{background-position:0 0}to{background-position:-24px 0}}
+
+  .dotwrap{position:relative;display:grid;place-items:center;width:16px;height:16px}
+  .dot{width:9px;height:9px;border-radius:50%;background:var(--status);
+    box-shadow:0 0 8px var(--status-glow);animation:breathe 2s ease-in-out infinite}
+  .ping{position:absolute;width:9px;height:9px;border-radius:50%;border:2px solid var(--status);
+    opacity:0;animation:ping 2s ease-out infinite}
+  @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.28)}}
+  @keyframes ping{0%{transform:scale(.6);opacity:.55}70%,100%{transform:scale(2.6);opacity:0}}
+
+  .value{display:flex;align-items:baseline;gap:7px;line-height:.92;margin-top:4px}
+  .value .num{font-family:'Fraunces',Georgia,serif;font-weight:300;font-size:62px;letter-spacing:-.02em;
+    color:var(--mn-text);text-shadow:1px 1px 0 rgba(255,255,255,.35)}
+  .value .unit{font-family:'Fraunces',Georgia,serif;font-weight:400;font-size:23px;color:var(--mn-text-mid)}
+
+  .split{display:flex;gap:18px;margin-top:13px}
+  .split .seg{display:flex;flex-direction:column;gap:2px}
+  .split .seg .t{font-size:10.5px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--mn-text-dim)}
+  .split .seg .n{font-family:'Fraunces',Georgia,serif;font-size:16px;color:var(--mn-text)}
+  .split .seg.src .n{color:var(--status)}
+  .split .seg.acc .n{color:var(--mn-accent)}
+
+  .spark{margin-top:16px;height:44px}
+  .spark svg{width:100%;height:100%;display:block}
+
+  .rail{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:center;padding-left:24px;flex-shrink:0}
+  .rail::before{content:"";position:absolute;left:0;top:4px;bottom:4px;width:2px;border-radius:2px;
+    background:linear-gradient(var(--mn-bg-dark),var(--mn-bg-light));box-shadow:1px 0 0 rgba(255,255,255,.5)}
+  .stat{display:flex;flex-direction:column;gap:2px;min-width:104px}
+  .stat + .stat{margin-top:13px}
+  .stat .k{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--mn-text-dim)}
+  .stat .vv{font-family:'Fraunces',Georgia,serif;font-size:19px;color:var(--mn-text)}
+  .stat .bar{height:4px;border-radius:4px;background:var(--mn-bg);box-shadow:var(--shadow-in);overflow:hidden;margin-top:4px}
+  .stat .bar i{display:block;height:100%;border-radius:4px;
+    background:linear-gradient(90deg,var(--mn-accent-light),var(--mn-accent));box-shadow:0 0 8px var(--mn-accent-glow)}
+  .stat .bar i.g{background:linear-gradient(90deg,#9aa86a,#6f8a3e);box-shadow:0 0 8px rgba(111,138,62,.5)}
+</style>
+</head>
+<body>
+
+<!-- ===== SOLARBETRIEB ===== -->
+<div class="shot"><div class="card mode-solar">
+  <div class="main">
+    <div class="head">
+      <span class="icon"><svg viewBox="0 0 24 24"><circle class="fill" cx="12" cy="12" r="3.4"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg></span>
+      <span class="label">Balkonkraftwerk</span>
+      <span class="live"><span class="dotwrap"><span class="ping"></span><span class="dot"></span></span></span>
+    </div>
+    <div class="value"><span class="num">612</span><span class="unit">W</span></div>
+    <div class="split">
+      <div class="seg src"><span class="t">Eigenverbrauch</span><span class="n">292 W</span></div>
+      <div class="seg acc"><span class="t">Einspeisung</span><span class="n">320 W</span></div>
+    </div>
+    <div class="spark">
+      <svg viewBox="0 0 300 44" preserveAspectRatio="none">
+        <defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8743a" stop-opacity=".30"/><stop offset="1" stop-color="#b8743a" stop-opacity="0"/></linearGradient></defs>
+        <path d="M0,42 L0,40 28,38 56,30 84,20 112,13 140,10 168,9 196,12 224,18 252,25 280,33 300,38 L300,44 L0,44 Z" fill="url(#g1)"/>
+        <polyline points="0,40 28,38 56,30 84,20 112,13 140,10 168,9 196,12 224,18 252,25 280,33 300,38" fill="none" stroke="#b8743a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 2px rgba(184,116,58,.5))" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+  </div>
+  <div class="rail">
+    <div class="stat"><span class="k">Heute</span><span class="vv">3,84 kWh</span><div class="bar"><i style="width:78%"></i></div></div>
+    <div class="stat"><span class="k">Speicher</span><span class="vv">58 %</span><div class="bar"><i class="g" style="width:58%"></i></div></div>
+    <div class="stat"><span class="k">Gespart</span><span class="vv">1,15 €</span><div class="bar"><i style="width:64%"></i></div></div>
+    <div class="stat"><span class="k">Autarkie</span><span class="vv">42 %</span><div class="bar"><i style="width:42%"></i></div></div>
+  </div>
+</div></div>
+
+<!-- ===== SPEICHERBEZUG ===== -->
+<div class="shot"><div class="card mode-storage">
+  <div class="main">
+    <div class="head">
+      <span class="icon"><svg viewBox="0 0 24 24"><circle class="fill" cx="12" cy="12" r="3.4"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg></span>
+      <span class="label">Balkonkraftwerk</span>
+      <span class="live"><span class="flow flow-down"></span><span class="dotwrap"><span class="dot"></span></span></span>
+    </div>
+    <div class="value"><span class="num">340</span><span class="unit">W</span></div>
+    <div class="split">
+      <div class="seg src"><span class="t">Speicherstand</span><span class="n">58 %</span></div>
+      <div class="seg"><span class="t">Reichweite</span><span class="n">4,2 h</span></div>
+    </div>
+    <div class="spark">
+      <svg viewBox="0 0 300 44" preserveAspectRatio="none">
+        <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8743a" stop-opacity=".30"/><stop offset="1" stop-color="#b8743a" stop-opacity="0"/></linearGradient></defs>
+        <path d="M0,43 L0,42 24,40 48,34 72,25 96,16 120,11 144,10 168,13 192,20 216,29 240,36 264,41 288,43 300,43 L300,44 L0,44 Z" fill="url(#g2)"/>
+        <polyline points="0,42 24,40 48,34 72,25 96,16 120,11 144,10 168,13 192,20 216,29 240,36 264,41 288,43 300,43" fill="none" stroke="#b8743a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 2px rgba(184,116,58,.5))" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+  </div>
+  <div class="rail">
+    <div class="stat"><span class="k">Heute</span><span class="vv">3,84 kWh</span><div class="bar"><i style="width:78%"></i></div></div>
+    <div class="stat"><span class="k">Speicher</span><span class="vv">58 %</span><div class="bar"><i class="g" style="width:58%"></i></div></div>
+    <div class="stat"><span class="k">Gespart</span><span class="vv">1,15 €</span><div class="bar"><i style="width:64%"></i></div></div>
+    <div class="stat"><span class="k">Autarkie</span><span class="vv">42 %</span><div class="bar"><i style="width:42%"></i></div></div>
+  </div>
+</div></div>
+
+<!-- ===== NETZBEZUG ===== -->
+<div class="shot"><div class="card mode-grid">
+  <div class="main">
+    <div class="head">
+      <span class="icon"><svg viewBox="0 0 24 24"><circle class="fill" cx="12" cy="12" r="3.4"/><path d="M12 3v2.4M12 18.6V21M3 12h2.4M18.6 12H21M5.6 5.6l1.7 1.7M16.7 16.7l1.7 1.7M18.4 5.6l-1.7 1.7M7.3 16.7l-1.7 1.7"/></svg></span>
+      <span class="label">Balkonkraftwerk</span>
+      <span class="live"><span class="flow flow-left"></span><span class="dotwrap"><span class="dot"></span></span></span>
+    </div>
+    <div class="value"><span class="num">740</span><span class="unit">W</span></div>
+    <div class="split">
+      <div class="seg src"><span class="t">Netzbezug</span><span class="n">740 W</span></div>
+      <div class="seg acc"><span class="t">Kosten</span><span class="n">0,24 €/h</span></div>
+    </div>
+    <div class="spark">
+      <svg viewBox="0 0 300 44" preserveAspectRatio="none">
+        <defs><linearGradient id="g3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8743a" stop-opacity=".30"/><stop offset="1" stop-color="#b8743a" stop-opacity="0"/></linearGradient></defs>
+        <path d="M0,43 L0,43 24,42 48,38 72,30 96,21 120,14 144,12 168,15 192,23 216,32 240,39 264,42 288,43 300,43 L300,44 L0,44 Z" fill="url(#g3)"/>
+        <polyline points="0,43 24,42 48,38 72,30 96,21 120,14 144,12 168,15 192,23 216,32 240,39 264,42 288,43 300,43" fill="none" stroke="#b8743a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 2px rgba(184,116,58,.5))" vector-effect="non-scaling-stroke"/>
+      </svg>
+    </div>
+  </div>
+  <div class="rail">
+    <div class="stat"><span class="k">Heute</span><span class="vv">3,84 kWh</span><div class="bar"><i style="width:78%"></i></div></div>
+    <div class="stat"><span class="k">Speicher</span><span class="vv">12 %</span><div class="bar"><i class="g" style="width:12%"></i></div></div>
+    <div class="stat"><span class="k">Gespart</span><span class="vv">1,15 €</span><div class="bar"><i style="width:64%"></i></div></div>
+    <div class="stat"><span class="k">Autarkie</span><span class="vv">42 %</span><div class="bar"><i style="width:42%"></i></div></div>
+  </div>
+</div></div>
+
+</body>
+</html>

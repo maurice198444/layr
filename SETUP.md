@@ -49,7 +49,7 @@ npm run deploy
 
 Das macht:
 1. `vite build` → produziert `dist/layr.js` (~50 KB minified)
-2. `node scripts/deploy.mjs` → kopiert nach `H:\www\community\layr-cards\layr.js`
+2. `node scripts/deploy.mjs` → kopiert nach `H:\www\community\layr\layr.js`
 
 Output sieht so aus:
 ```
@@ -58,8 +58,8 @@ dist/layr.js  46.21 kB │ gzip: 14.87 kB
 ✓ built in 1.4s
 
 › Quelle:  dist/layr.js  (46.2 KB)
-› Ziel:    H:/www/community/layr-cards/layr.js
-✓ Deployed nach H:/www/community/layr-cards/layr.js
+› Ziel:    H:/www/community/layr/layr.js
+✓ Deployed nach H:/www/community/layr/layr.js
 
   In HA Browser-Tab: Ctrl+Shift+R für Cache-Reload
 ```
@@ -92,7 +92,7 @@ Dann im HA-Browser Ctrl+Shift+R.
 
 **Einstellungen → Dashboards → Drei-Punkte-Menü → Ressourcen → Hinzufügen:**
 
-- URL: `/local/community/layr-cards/layr.js`
+- URL: `/local/community/layr/layr.js`
 - Typ: **JavaScript-Modul**
 
 Speichern, HA-Tab reloaden.
@@ -158,7 +158,7 @@ switches:
 Der Deploy-Pfad ist in `scripts/deploy.mjs` hartkodiert:
 
 ```javascript
-const TARGET_DIR = 'H:/www/community/layr-cards';
+const TARGET_DIR = 'H:/www/community/layr';
 ```
 
 Falls dein NAS-Mount mal ein anderer Laufwerksbuchstabe wird, einfach dort anpassen.

@@ -15,7 +15,7 @@ const PROJECT_ROOT = resolve(__dirname, '..');
 
 // ---- Konfiguration ------------------------------------------------------
 const SOURCE = resolve(PROJECT_ROOT, 'dist/layr.js');
-const TARGET_DIR = 'H:/www/community/layr-cards';
+const TARGET_DIR = 'H:/www/community/layr';
 const TARGET = `${TARGET_DIR}/layr.js`;
 
 // ---- Helpers ------------------------------------------------------------

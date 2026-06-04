@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig(({ mode }) => ({
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/layr-room-card.ts'),
+      entry: resolve(__dirname, 'src/layr.ts'),
       name: 'LayrCards',
       formats: ['es'],
       fileName: () => 'layr.js',
