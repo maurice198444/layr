@@ -6,6 +6,13 @@ All notable changes to Layr will be documented in this file. The format follows 
 
 ### Added
 
+- **Layr Energy Card** — a live energy-flow card for solar + battery setups (Balkonkraftwerk).
+  - Auto-detected operating mode from the flow sensors: Solarbetrieb (green), Speicherbezug (amber), Netzbezug (red)
+  - Animated energy-flow diagram with neumorphic Solar/Haus/Speicher/Netz nodes and glowing particles along the active path
+  - Computed headline + split per mode (e.g. self-consumption vs feed-in)
+  - Configurable stat column (up to four entities with optional bar fill)
+  - Sign-convention flags (`grid_export_positive`, `battery_charge_positive`) and a configurable idle `threshold`
+  - Tap to open more-info (configurable via `tap_action`, keyboard accessible)
 - **Layr Hero Card** — a featured-value display for a single entity.
   - Large Fraunces headline value with auto-formatted unit and German decimal notation
   - Optional secondary value with its own label

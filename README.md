@@ -34,6 +34,7 @@ Layr is structured as a **free core pack** plus a future **premium tier**. Both 
 |---|---|---|
 | **Room Card** | ✅ *v0.1.0* | Adaptive multi-section card for an entire room — temperature, humidity, lights, climate, blinds, switches |
 | **Hero Card** | ✅ *unreleased* | Featured value display with optional secondary value and recorder-backed sparkline |
+| **Energy Card** | ✅ *unreleased* | Live energy-flow card for solar + battery setups — animated flow diagram with auto-detected operating mode |
 | Stat Window | *planned* | Sensor readout with mini trend chart |
 | Ticker Card | *planned* | Scrolling notifications and alerts |
 | Divider Card | *planned* | Typographic section breaks for dashboards |
@@ -138,6 +139,43 @@ See [`docs/hero-card.md`](docs/hero-card.md) for complete configuration referenc
 
 ---
 
+## Also available — Energy Card
+
+A live energy-flow card for solar + battery setups, built with balcony solar plants (*Balkonkraftwerk*) in mind. It reads your current power flows, auto-detects the operating mode, and animates an energy-flow diagram — glowing particles travel along the active path while idle paths rest in the background.
+
+**Features:**
+
+- Auto-detected operating mode with its own status colour:
+  - **Solarbetrieb** (green) — the sun covers consumption, surplus is exported
+  - **Speicherbezug** (amber) — drawing from the battery
+  - **Netzbezug** (red) — drawing from the grid
+- Animated flow diagram with neumorphic Solar / Haus / Speicher / Netz nodes
+- Computed headline + split per mode (e.g. self-consumption vs feed-in)
+- Configurable stat column (up to four entities with optional bars)
+- Sign-convention flags so it works with any integration's grid/battery sensors
+
+**Configuration example:**
+
+```yaml
+type: custom:layr-energy-card
+name: Balkonkraftwerk
+icon: sun
+solar_entity: sensor.bkw_leistung
+house_entity: sensor.hausverbrauch
+grid_entity: sensor.netzleistung
+battery_entity: sensor.akku_leistung
+battery_level_entity: sensor.akku_soc
+stats:
+  - { entity: sensor.bkw_heute, name: Heute, max: 5, tone: green }
+  - { entity: sensor.akku_soc, name: Speicher, tone: green }
+  - { entity: sensor.bkw_gespart, name: Gespart }
+  - { entity: sensor.autarkie, name: Autarkie }
+```
+
+See [`docs/energy-card.md`](docs/energy-card.md) for the complete configuration reference, sign conventions, and mode logic.
+
+---
+
 ## Installation
 
 ### Via HACS *(coming soon)*
@@ -180,6 +218,7 @@ Future style packs (planned for Premium) will re-skin the same component archite
 ### Phase 1 — Free Card Pack *(Q3 2026)*
 - ✅ Room Card *(v0.1.0)*
 - ✅ Hero Card *(unreleased)*
+- ✅ Energy Card *(unreleased)*
 - ⬜ Stat Window Card
 - ⬜ Ticker Card
 - ⬜ Divider Card
