@@ -247,9 +247,9 @@ let A = class extends HTMLElement {
   }
 };
 A.elementStyles = [], A.shadowRootOptions = { mode: "open" }, A[z("elementProperties")] = /* @__PURE__ */ new Map(), A[z("finalized")] = /* @__PURE__ */ new Map(), Wt?.({ ReactiveElement: A }), (W.reactiveElementVersions ??= []).push("2.1.2");
-const et = globalThis, pt = (e) => e, F = et.trustedTypes, ut = F ? F.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, At = "$lit$", m = `lit$${Math.random().toFixed(9).slice(2)}$`, Ct = "?" + m, Vt = `<${Ct}>`, k = document, R = () => k.createComment(""), H = (e) => e === null || typeof e != "object" && typeof e != "function", st = Array.isArray, Gt = (e) => st(e) || typeof e?.[Symbol.iterator] == "function", Q = `[ 	
+const et = globalThis, pt = (e) => e, F = et.trustedTypes, ut = F ? F.createPolicy("lit-html", { createHTML: (e) => e }) : void 0, At = "$lit$", f = `lit$${Math.random().toFixed(9).slice(2)}$`, Ct = "?" + f, Vt = `<${Ct}>`, k = document, R = () => k.createComment(""), H = (e) => e === null || typeof e != "object" && typeof e != "function", st = Array.isArray, Gt = (e) => st(e) || typeof e?.[Symbol.iterator] == "function", Q = `[ 	
 \f\r]`, P = /<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g, gt = /-->/g, vt = />/g, b = RegExp(`>|${Q}(?:([^\\s"'>=/]+)(${Q}*=${Q}*(?:[^ 	
-\f\r"'\`<>=]|("|')|))|$)`, "g"), ft = /'/g, mt = /"/g, Et = /^(?:script|style|textarea|title)$/i, Mt = (e) => (t, ...s) => ({ _$litType$: e, strings: t, values: s }), a = Mt(1), O = Mt(2), x = Symbol.for("lit-noChange"), h = Symbol.for("lit-nothing"), _t = /* @__PURE__ */ new WeakMap(), w = k.createTreeWalker(k, 129);
+\f\r"'\`<>=]|("|')|))|$)`, "g"), mt = /'/g, ft = /"/g, Et = /^(?:script|style|textarea|title)$/i, Mt = (e) => (t, ...s) => ({ _$litType$: e, strings: t, values: s }), a = Mt(1), O = Mt(2), x = Symbol.for("lit-noChange"), h = Symbol.for("lit-nothing"), _t = /* @__PURE__ */ new WeakMap(), w = k.createTreeWalker(k, 129);
 function Pt(e, t) {
   if (!st(e) || !e.hasOwnProperty("raw")) throw Error("invalid template strings array");
   return ut !== void 0 ? ut.createHTML(t) : t;
@@ -260,9 +260,9 @@ const Kt = (e, t) => {
   for (let l = 0; l < s; l++) {
     const c = e[l];
     let p, u, d = -1, v = 0;
-    for (; v < c.length && (o.lastIndex = v, u = o.exec(c), u !== null); ) v = o.lastIndex, o === P ? u[1] === "!--" ? o = gt : u[1] !== void 0 ? o = vt : u[2] !== void 0 ? (Et.test(u[2]) && (r = RegExp("</" + u[2], "g")), o = b) : u[3] !== void 0 && (o = b) : o === b ? u[0] === ">" ? (o = r ?? P, d = -1) : u[1] === void 0 ? d = -2 : (d = o.lastIndex - u[2].length, p = u[1], o = u[3] === void 0 ? b : u[3] === '"' ? mt : ft) : o === mt || o === ft ? o = b : o === gt || o === vt ? o = P : (o = b, r = void 0);
-    const f = o === b && e[l + 1].startsWith("/>") ? " " : "";
-    n += o === P ? c + Vt : d >= 0 ? (i.push(p), c.slice(0, d) + At + c.slice(d) + m + f) : c + m + (d === -2 ? l : f);
+    for (; v < c.length && (o.lastIndex = v, u = o.exec(c), u !== null); ) v = o.lastIndex, o === P ? u[1] === "!--" ? o = gt : u[1] !== void 0 ? o = vt : u[2] !== void 0 ? (Et.test(u[2]) && (r = RegExp("</" + u[2], "g")), o = b) : u[3] !== void 0 && (o = b) : o === b ? u[0] === ">" ? (o = r ?? P, d = -1) : u[1] === void 0 ? d = -2 : (d = o.lastIndex - u[2].length, p = u[1], o = u[3] === void 0 ? b : u[3] === '"' ? ft : mt) : o === ft || o === mt ? o = b : o === gt || o === vt ? o = P : (o = b, r = void 0);
+    const m = o === b && e[l + 1].startsWith("/>") ? " " : "";
+    n += o === P ? c + Vt : d >= 0 ? (i.push(p), c.slice(0, d) + At + c.slice(d) + f + m) : c + f + (d === -2 ? l : m);
   }
   return [Pt(e, n + (e[s] || "<?>") + (t === 2 ? "</svg>" : t === 3 ? "</math>" : "")), i];
 };
@@ -279,21 +279,21 @@ class N {
     for (; (r = w.nextNode()) !== null && c.length < l; ) {
       if (r.nodeType === 1) {
         if (r.hasAttributes()) for (const d of r.getAttributeNames()) if (d.endsWith(At)) {
-          const v = u[o++], f = r.getAttribute(d).split(m), U = /([.?@])?(.*)/.exec(v);
-          c.push({ type: 1, index: n, name: U[2], strings: f, ctor: U[1] === "." ? Qt : U[1] === "?" ? Xt : U[1] === "@" ? Zt : V }), r.removeAttribute(d);
-        } else d.startsWith(m) && (c.push({ type: 6, index: n }), r.removeAttribute(d));
+          const v = u[o++], m = r.getAttribute(d).split(f), U = /([.?@])?(.*)/.exec(v);
+          c.push({ type: 1, index: n, name: U[2], strings: m, ctor: U[1] === "." ? Qt : U[1] === "?" ? Xt : U[1] === "@" ? Zt : V }), r.removeAttribute(d);
+        } else d.startsWith(f) && (c.push({ type: 6, index: n }), r.removeAttribute(d));
         if (Et.test(r.tagName)) {
-          const d = r.textContent.split(m), v = d.length - 1;
+          const d = r.textContent.split(f), v = d.length - 1;
           if (v > 0) {
             r.textContent = F ? F.emptyScript : "";
-            for (let f = 0; f < v; f++) r.append(d[f], R()), w.nextNode(), c.push({ type: 2, index: ++n });
+            for (let m = 0; m < v; m++) r.append(d[m], R()), w.nextNode(), c.push({ type: 2, index: ++n });
             r.append(d[v], R());
           }
         }
       } else if (r.nodeType === 8) if (r.data === Ct) c.push({ type: 2, index: n });
       else {
         let d = -1;
-        for (; (d = r.data.indexOf(m, d + 1)) !== -1; ) c.push({ type: 7, index: n }), d += m.length - 1;
+        for (; (d = r.data.indexOf(f, d + 1)) !== -1; ) c.push({ type: 7, index: n }), d += f.length - 1;
       }
       n++;
     }
@@ -813,11 +813,11 @@ const wt = a`
   if (K(e)) return "—";
   const t = typeof e == "string" ? parseFloat(e) : e;
   return isNaN(t) ? "—" : `${_(t, 1)}°`;
-}, fe = (e) => {
+}, me = (e) => {
   if (K(e)) return null;
   const t = typeof e == "string" ? parseFloat(e) : e;
   return isNaN(t) ? null : `${Math.round(t)}%`;
-}, me = (e) => e === 0 ? "geschlossen" : e === 100 ? "offen" : `${e}% offen`;
+}, fe = (e) => e === 0 ? "geschlossen" : e === 100 ? "offen" : `${e}% offen`;
 let y = class extends $ {
   constructor() {
     super(), this._expanded = !1, this._isDraggingSlider = !1, this._draftBrightness = null, this._activePointerId = null, this._toggleExpand = () => {
@@ -979,7 +979,7 @@ let y = class extends $ {
   }
   // ---- Stats area (temp + humidity + quick-access) ----------------------
   _renderStatsArea() {
-    const e = ve(this._tempState?.state), t = this._climateState?.attributes.temperature, s = fe(this._humidityState?.state);
+    const e = ve(this._tempState?.state), t = this._climateState?.attributes.temperature, s = me(this._humidityState?.state);
     return a`
       <div class="stats-area">
         <div class="stats">
@@ -1112,7 +1112,7 @@ let y = class extends $ {
   }
   // ---- Cover control (up / stop / down) --------------------------------
   _renderCoverControl() {
-    const e = this._coverPosition, t = me(e);
+    const e = this._coverPosition, t = fe(e);
     return a`
       <div class="control-group">
         <div class="control-label">
@@ -2175,7 +2175,7 @@ let L = class extends $ {
   }
   setConfig(e) {
     if (!e) throw new Error("Invalid configuration");
-    if (!e.solar_entity && !e.grid_entity && !e.battery_entity && !e.battery_charge_entity && !e.battery_discharge_entity)
+    if (!e.solar_entity && !e.grid_entity && !e.grid_import_entity && !e.grid_export_entity && !e.battery_entity && !e.battery_charge_entity && !e.battery_discharge_entity)
       throw new Error("Layr Energy Card: configure at least one of solar_entity, grid_entity, battery_entity");
     this._config = { ...e };
   }
@@ -2190,16 +2190,23 @@ let L = class extends $ {
     return e ? X(this.hass.states[e]?.state) : null;
   }
   get _flow() {
-    const e = this._config, t = e.threshold ?? 20, s = Math.max(0, this._num(e.solar_entity) ?? 0), i = this._num(e.house_entity) ?? 0, r = this._num(e.battery_level_entity), n = this._num(e.grid_entity) ?? 0, o = e.grid_export_positive ? -n : n, l = Math.max(0, o), c = Math.max(0, -o);
-    let p, u;
-    if (e.battery_charge_entity || e.battery_discharge_entity)
-      p = Math.max(0, this._num(e.battery_charge_entity) ?? 0), u = Math.max(0, this._num(e.battery_discharge_entity) ?? 0);
+    const e = this._config, t = e.threshold ?? 20, s = Math.max(0, this._num(e.solar_entity) ?? 0), i = this._num(e.house_entity) ?? 0, r = this._num(e.battery_level_entity);
+    let n, o;
+    if (e.grid_import_entity || e.grid_export_entity)
+      n = Math.max(0, this._num(e.grid_import_entity) ?? 0), o = Math.max(0, this._num(e.grid_export_entity) ?? 0);
     else {
-      const v = this._num(e.battery_entity) ?? 0, f = e.battery_charge_positive ?? !0 ? v : -v;
-      p = Math.max(0, f), u = Math.max(0, -f);
+      const u = this._num(e.grid_entity) ?? 0, d = e.grid_export_positive ? -u : u;
+      n = Math.max(0, d), o = Math.max(0, -d);
     }
-    let d = "solar";
-    return l > t ? d = "grid" : u > t && (d = "storage"), { mode: d, solar: s, house: i, importW: l, exportW: c, charge: p, discharge: u, soc: r };
+    let l, c;
+    if (e.battery_charge_entity || e.battery_discharge_entity)
+      l = Math.max(0, this._num(e.battery_charge_entity) ?? 0), c = Math.max(0, this._num(e.battery_discharge_entity) ?? 0);
+    else {
+      const u = this._num(e.battery_entity) ?? 0, d = e.battery_charge_positive ?? !0 ? u : -u;
+      l = Math.max(0, d), c = Math.max(0, -d);
+    }
+    let p = "solar";
+    return n > t ? p = "grid" : c > t && (p = "storage"), { mode: p, solar: s, house: i, importW: n, exportW: o, charge: l, discharge: c, soc: r };
   }
   // ============================================================
   // RENDER

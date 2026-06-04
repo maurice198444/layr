@@ -47,7 +47,12 @@ export interface LayrEnergyCardConfig extends LovelaceCardConfig {
   icon?: keyof typeof GLYPH_ICONS | string;
   solar_entity?: string;
   house_entity?: string;
+  /** Single signed grid power sensor (import/export via grid_export_positive). */
   grid_entity?: string;
+  /** Separate positive-only grid import (Bezug) power sensor — takes precedence over grid_entity. */
+  grid_import_entity?: string;
+  /** Separate positive-only grid export (Einspeisung) power sensor — takes precedence over grid_entity. */
+  grid_export_entity?: string;
   /** Single signed battery power sensor (charge/discharge via battery_charge_positive). */
   battery_entity?: string;
   /** Separate positive-only charge power sensor (takes precedence over battery_entity). */
@@ -124,6 +129,8 @@ export class LayrEnergyCard extends LitElement {
     if (
       !config.solar_entity &&
       !config.grid_entity &&
+      !config.grid_import_entity &&
+      !config.grid_export_entity &&
       !config.battery_entity &&
       !config.battery_charge_entity &&
       !config.battery_discharge_entity
@@ -155,10 +162,19 @@ export class LayrEnergyCard extends LitElement {
     const house = this._num(c.house_entity) ?? 0;
     const soc = this._num(c.battery_level_entity);
 
-    const gridRaw = this._num(c.grid_entity) ?? 0;
-    const gridImport = c.grid_export_positive ? -gridRaw : gridRaw; // +import
-    const importW = Math.max(0, gridImport);
-    const exportW = Math.max(0, -gridImport);
+    // Grid: prefer separate positive-only import/export sensors (e.g. a smart
+    // meter), else a single signed sensor interpreted via grid_export_positive.
+    let importW: number;
+    let exportW: number;
+    if (c.grid_import_entity || c.grid_export_entity) {
+      importW = Math.max(0, this._num(c.grid_import_entity) ?? 0);
+      exportW = Math.max(0, this._num(c.grid_export_entity) ?? 0);
+    } else {
+      const gridRaw = this._num(c.grid_entity) ?? 0;
+      const gridImport = c.grid_export_positive ? -gridRaw : gridRaw; // +import
+      importW = Math.max(0, gridImport);
+      exportW = Math.max(0, -gridImport);
+    }
 
     // Battery: prefer separate positive-only charge/discharge sensors, else a
     // single signed sensor interpreted via battery_charge_positive.

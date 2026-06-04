@@ -28,7 +28,9 @@ That's enough to render the flow diagram and detect the operating mode. Add a `b
 | `icon` | string | `sun` | Header glyph — any [Hero Card glyph](hero-card.md#available-icons) |
 | `solar_entity` | entity_id | — | Current PV generation (W) |
 | `house_entity` | entity_id | — | Current house consumption (W) |
-| `grid_entity` | entity_id | — | Grid power (W) — see [sign conventions](#sign-conventions) |
+| `grid_entity` | entity_id | — | Single signed grid power (W) — import/export via sign |
+| `grid_import_entity` | entity_id | — | Separate positive-only grid **import** (Bezug) power (W) |
+| `grid_export_entity` | entity_id | — | Separate positive-only grid **export** (Einspeisung) power (W) |
 | `battery_entity` | entity_id | — | Single signed battery power (W) — charge/discharge via sign |
 | `battery_charge_entity` | entity_id | — | Separate positive-only **charge** power (W) |
 | `battery_discharge_entity` | entity_id | — | Separate positive-only **discharge** power (W) |
@@ -47,7 +49,9 @@ At least one of `solar_entity`, `grid_entity`, or `battery_entity` is required. 
 
 Home Assistant integrations disagree on the sign of grid and battery power, so the card lets you adapt:
 
-- **Grid** — by default a **positive** `grid_entity` value means **import** (drawing from the grid) and a **negative** value means **export** (feed-in). If your sensor is the other way round, set `grid_export_positive: true`.
+- **Grid** — two ways to wire it:
+  - **Single signed sensor:** set `grid_entity`. By default a **positive** value means **import** (drawing from the grid), a **negative** value means **export** (feed-in). Flip with `grid_export_positive: true`.
+  - **Separate sensors:** set `grid_import_entity` and/or `grid_export_entity` (both positive-only watts). These take precedence over `grid_entity` and remove the sign guesswork entirely — ideal for smart meters that expose `…_netzbezug` / `…_netzeinspeisung`.
 - **Battery** — two ways to wire it:
   - **Single signed sensor:** set `battery_entity`. By default a **positive** value means **charging**, a **negative** value means **discharging**. Flip with `battery_charge_positive: false`.
   - **Separate sensors:** set `battery_charge_entity` and/or `battery_discharge_entity` (both positive-only watts). These take precedence over `battery_entity` and let the card animate both the charge (Haus→Speicher) and discharge (Speicher→Haus) paths. Common for Anker Solarbank and similar integrations that expose `…_aufladeleistung` / `…_entladeleistung`.
