@@ -6,81 +6,84 @@
 [![Version](https://img.shields.io/badge/version-0.1.0-orange.svg)](https://github.com/maurice198444/layr/releases)
 [![hacs_custom](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 
-A premium card pack for Home Assistant with the **Monolith** design aesthetic — neumorphic surfaces, editorial typography, and a focus on craftsmanship over feature-quantity.
-
 <p align="center">
-  <img src="docs/preview.png" alt="Layr Room Card" width="380">
+  <img src="docs/preview.png" alt="Layr cards preview" width="380">
 </p>
 
 ---
 
-## Why Layr?
+## What is Layr?
 
-Most Home Assistant custom cards optimize for flexibility — endless config options, every conceivable use case, generic Material icons. The result is dashboards that work but look like control panels.
+Layr is a Home Assistant card pack with a deliberate visual identity.
 
-Layr takes a different approach: **fewer cards, designed with intent.** Each card has a strong visual identity, custom-drawn iconography, and considered interaction patterns. Like furniture — you don't need fifty chairs, you need one that feels right.
+Most HA custom cards optimize for flexibility — endless config options, every conceivable use case, generic Material icons. The result is dashboards that *work* but look like control panels. Layr takes a different approach: **fewer cards, designed with intent.** Each card has a strong visual identity, custom-drawn iconography, and considered interaction patterns. Like furniture — you don't need fifty chairs, you need one that feels right.
 
-The first release ships with the **Room Card** — a single adaptive card that handles temperature, humidity, lights, climate, blinds, and switches for an entire room. Sections render conditionally based on which entities you configure, so the same component works for a sensor-only hallway and a fully controllable living room.
+The pack is built around three ideas:
+
+1. **A unified visual language.** Every card in the pack shares a design system — colors, typography, motion, shadows. They look like they belong together.
+2. **Style packs over endless configuration.** Instead of a thousand config options, Layr will ship discrete visual themes (Monolith, Editorial, Cockpit, Brutalist). You pick a style; the cards adapt as a set.
+3. **Quality over breadth.** Fewer cards, each one polished. The kind of card you'd actually want on the wall.
+
+## What's in the pack?
+
+Layr is structured as a **free core pack** plus a future **premium tier**. Both are part of the same codebase and use the same design system — Premium adds more cards and capabilities, never replaces or breaks the free ones.
+
+### Free Card Pack — *MIT licensed, free forever*
+
+| Card | Status | What it does |
+|---|---|---|
+| **Room Card** | ✅ *v0.1.0* | Adaptive multi-section card for an entire room — temperature, humidity, lights, climate, blinds, switches |
+| Hero Card | *planned* | Featured value display with optional sparkline |
+| Stat Window | *planned* | Sensor readout with mini trend chart |
+| Ticker Card | *planned* | Scrolling notifications and alerts |
+| Divider Card | *planned* | Typographic section breaks for dashboards |
+
+### Premium Card Pack — *Planned Q4 2026*
+
+| Card | What it does |
+|---|---|
+| Battery Dial Card | Battery state with discharge/charge visualization |
+| Light Card | Dedicated dimmer with color temperature controls |
+| Climate Card | Dedicated thermostat with schedule preview |
+| Cover Card | Dedicated blind/cover with tilt support |
+| Media Player Card | Music/video with album art and queue |
+| Calendar Card | Upcoming events with iconography |
+| Energy Flow Card | Solar / battery / grid flow visualization |
+| Camera Card | Live view with motion overlay |
+| Scene Knobs Card | Tactile scene selector |
+
+Plus **Style Packs** that re-skin the entire collection: *Editorial*, *Cockpit*, *Brutalist*. Pick the aesthetic that matches your space.
+
+And eventually an **AI Dashboard Generator** (BYOK) — describe your home, get a configured dashboard.
+
+### Pricing (planned)
+
+- **Free** — €0, forever, all five core cards
+- **Premium subscription** — €7/month
+- **Premium lifetime** — €79 one-time
+
+> The free cards are not a demo. They're genuinely useful as a complete set. Premium is for people who want the broader collection or the alternative style packs.
 
 ---
 
-## The Room Card
+## Currently available — Room Card
 
-### What it does
+The first card in the pack. A single adaptive component that handles temperature, humidity, lights, climate, blinds, and switches for an entire room. Sections render conditionally based on which entities you configure, so the same component works for a sensor-only hallway and a fully controllable living room.
 
-- **Temperature display** with target temperature annotation (italic Fraunces serif)
-- **Humidity readout** as secondary block, sized between primary and annotation
-- **Quick-access button** in the header — configurable to toggle any entity
-- **Expandable controls** that slide out beneath the header:
-  - Light brightness slider (auto-detects whether your light supports dimming)
-  - Climate setpoint stepper with long-press for rapid adjustment
-  - Cover/blind controls (up · stop · down) with live position display
-  - Switch pills for room devices (outlets, fans, etc.)
-- **Custom hand-drawn icons** for common room types — no Material Icons
-- **Adaptive rendering** — sections appear only for configured entities
+**Features:**
 
-### What makes it different
+- Temperature display with target temperature annotation
+- Humidity readout as separate block
+- Configurable quick-access button in the header
+- Expandable controls panel:
+  - Light brightness slider (auto-detects dimming support)
+  - Climate setpoint stepper with long-press
+  - Cover/blind controls (up · stop · down)
+  - Switch pills for room devices
+- Custom hand-drawn icons for 10 room types
+- Adaptive layout — sections appear only for configured entities
 
-Most HA cards are functional. The Room Card aims to be **considered** — every shadow, transition, and typographic choice is deliberate. The visual style draws from neumorphism but pulls it toward a warmer, more editorial palette (tobacco accent, cream surfaces, Fraunces serif for numerical values).
-
-It's the card I wanted for my own setup and couldn't find.
-
----
-
-## Installation
-
-### Via HACS (coming soon)
-
-> HACS Custom Repository support is planned for v0.2.0. Until then, install manually.
-
-### Manual
-
-1. Download the latest `layr.js` from the [releases page](https://github.com/maurice198444/layr/releases)
-2. Place it in your Home Assistant config directory at:
-   ```
-   /config/www/community/layr/layr.js
-   ```
-3. Register it as a Lovelace resource:
-   - **Settings → Dashboards → ⋮ (top right) → Resources → Add Resource**
-   - URL: `/local/community/layr/layr.js`
-   - Type: **JavaScript Module**
-4. Hard-refresh your browser (`Ctrl+Shift+R`)
-5. Add the card via the dashboard editor (see configuration below)
-
----
-
-## Configuration
-
-### Minimal example
-
-```yaml
-type: custom:layr-room-card
-name: Diele
-icon: door
-temperature_entity: sensor.diele_temperature
-```
-
-### Full example
+**Configuration example:**
 
 ```yaml
 type: custom:layr-room-card
@@ -94,7 +97,6 @@ cover_entity: cover.wohnzimmer_rolladen
 quick_access:
   entity: switch.luefter
   name: Lüfter
-  tap_action: toggle
 switches:
   - entity: switch.aussenlampe
     name: Außenlampe
@@ -102,132 +104,77 @@ switches:
     name: Steckdose Couch
 ```
 
-### Configuration options
-
-| Option | Type | Required | Description |
-|---|---|:---:|---|
-| `type` | string | ✓ | Must be `custom:layr-room-card` |
-| `name` | string | | Room name displayed in the header |
-| `icon` | string | | Room icon — see list below |
-| `temperature_entity` | string | | Temperature sensor entity ID |
-| `humidity_entity` | string | | Humidity sensor entity ID |
-| `light_entity` | string | | Light entity (auto-detects dimming support) |
-| `climate_entity` | string | | Climate/thermostat entity ID |
-| `cover_entity` | string | | Cover/blind entity ID |
-| `quick_access` | object | | Quick-access button config (see below) |
-| `switches` | array | | List of switch entities to control |
-
-### Quick-access object
-
-| Option | Type | Required | Description |
-|---|---|:---:|---|
-| `entity` | string | ✓ | Entity to toggle (switch, light, automation, etc.) |
-| `name` | string | | Label below the button (defaults to `friendly_name`) |
-| `tap_action` | string | | `toggle` (default), `turn_on`, or `turn_off` |
-
-### Switches array item
-
-| Option | Type | Required | Description |
-|---|---|:---:|---|
-| `entity` | string | ✓ | Switch entity ID |
-| `name` | string | | Display label (defaults to `friendly_name`) |
-
-### Available room icons
-
-| Value | Symbol |
-|---|---|
-| `door` | Door (entryway/hallway) |
-| `pot` | Cooking pot (kitchen) |
-| `sofa` | Sofa (living room) |
-| `bed` | Bed (bedroom) |
-| `bath` | Bathtub (bathroom) |
-| `desk` | Desk with lamp (office) |
-| `toilet` | Toilet |
-| `garden` | Plant (garden/balcony) |
-| `garage` | Garage |
-| `default` | House (fallback) |
-
-More icons will be added as the pack grows.
+See [`docs/room-card.md`](docs/room-card.md) for complete configuration reference, all options, and available icons.
 
 ---
 
-## Free vs Premium
+## Installation
 
-Layr Free ships with a curated set of cards under the MIT license, free forever. A Premium tier is planned for late 2026 with additional cards, style packs, and an AI-powered dashboard generator.
+### Via HACS *(coming soon)*
 
-| | Free | Premium |
-|---|:---:|:---:|
-| **Room Card** — adaptive multi-section card | ✓ | ✓ |
-| **Hero Card** — featured value display | *planned* | ✓ |
-| **Stat Window** — sensor with sparkline | *planned* | ✓ |
-| **Ticker Card** — scrolling notifications | *planned* | ✓ |
-| **Divider Card** — typographic section breaks | *planned* | ✓ |
-| Updates to free cards (forever) | ✓ | ✓ |
-| Battery Dial Card | | ✓ |
-| Light Card (dedicated dimmer) | | ✓ |
-| Climate Card (dedicated) | | ✓ |
-| Media Player Card | | ✓ |
-| Cover Card (dedicated) | | ✓ |
-| Calendar Card | | ✓ |
-| Energy Flow Card | | ✓ |
-| Camera Card | | ✓ |
-| Scene Knobs Card | | ✓ |
-| Style Packs (Editorial · Cockpit · Brutalist) | | ✓ |
-| AI Dashboard Generator (BYOK) | | ✓ |
-| Priority support | | ✓ |
+> HACS Custom Repository support is planned for v0.2.0. Until then, install manually.
 
-**Planned pricing:** €7/month or €79 lifetime
-**BYOK** — the AI generator uses your own API key (OpenAI · Anthropic · local LLM)
+### Manual
 
-> The Free Card Pack stays free under MIT license. Premium is a separate offering for cards that take significantly more time to design and maintain. If you only need the basics, the free tier is genuinely sufficient.
+1. Download `layr.js` from the [latest release](https://github.com/maurice198444/layr/releases)
+2. Place it at `/config/www/community/layr/layr.js` in your HA installation
+3. Register it as a Lovelace resource:
+   - **Settings → Dashboards → ⋮ → Resources → Add Resource**
+   - URL: `/local/community/layr/layr.js`
+   - Type: **JavaScript Module**
+4. Hard-refresh your browser (`Ctrl+Shift+R`)
+5. Add a card via the dashboard editor
+
+---
+
+## Design Philosophy
+
+Layr is built on the conviction that **smart-home dashboards should feel as considered as the homes they control.** Most current cards prioritize information density and configurability. Layr prioritizes:
+
+- **Surfaces, not borders.** Cards are sculpted with neumorphic shadows, never outlined with `border: 1px solid`.
+- **Editorial typography.** Numerical values use Fraunces (a refined contemporary serif). UI labels use Geist. Italic for annotations.
+- **Considered motion.** Animations communicate state changes — they never decorate. 300–400ms ease curves throughout.
+- **Custom iconography.** Every icon is hand-drawn for the pack. No FontAwesome, no Material Icons.
+- **Conditional rendering.** Every section appears only when its data exists. The card adapts to what you have.
+
+### The Monolith style — Layr's primary identity
+
+The default look of all Layr cards. Warm cream surfaces (`#e6e1d8`), a tobacco accent (`#b8743a`), and Fraunces serif for numbers. Designed to feel **anti-Apple-Home, anti-Material-default** — closer to refined Bauhaus furniture than to a generic device UI.
+
+Future style packs (planned for Premium) will re-skin the same component architecture with different visual languages: *Editorial* (more typographic, magazine-style), *Cockpit* (utilitarian, dense), *Brutalist* (raw, geometric).
 
 ---
 
 ## Roadmap
 
 ### Phase 1 — Free Card Pack *(Q3 2026)*
-- ✅ Room Card *(v0.1.0 — current)*
+- ✅ Room Card *(v0.1.0)*
 - ⬜ Hero Card
 - ⬜ Stat Window Card
 - ⬜ Ticker Card
 - ⬜ Divider Card
 - ⬜ HACS submission
-- ⬜ Visual editor (point-and-click YAML)
-- ⬜ Documentation site
+- ⬜ Visual editor (point-and-click YAML configuration)
+- ⬜ Documentation site at layr.de
 
 ### Phase 2 — Premium Tier *(Q4 2026)*
-- ⬜ Premium cards listed above
-- ⬜ Style packs
-- ⬜ License server + Stripe integration
+- ⬜ Nine Premium cards (see list above)
+- ⬜ Style packs (Editorial, Cockpit, Brutalist)
+- ⬜ License server + Stripe checkout
 - ⬜ Premium documentation
 
-### Phase 3 — AI Generator *(2027)*
-- ⬜ Backend dashboard generator
-- ⬜ BYOK configuration
+### Phase 3 — AI Dashboard Generator *(2027)*
+- ⬜ Backend generator (server-side LLM integration)
+- ⬜ BYOK configuration (OpenAI · Anthropic · local)
 - ⬜ Template library
 
-Timelines are honest estimates from a developer with limited weekly hours. They will slip. The free cards will ship.
-
----
-
-## Design Philosophy
-
-Layr is built around a single visual identity called **Monolith**. The principles:
-
-- **Surfaces, not borders.** Cards are sculpted with neumorphic shadows, never outlined.
-- **Editorial typography.** Numerical values use Fraunces (a refined contemporary serif). UI labels use Geist. Italic for annotations and subtitles.
-- **Warm palette.** Cream surfaces (`#e6e1d8`), tobacco accent (`#b8743a`). Anti-Apple-Home. Anti-Material-default.
-- **Custom iconography.** Every room icon is hand-drawn. No FontAwesome, no Material Icons.
-- **Considered motion.** Animations communicate state changes, never decorate. 300-400ms ease curves throughout.
-- **Conditional rendering.** Every section only appears when its entity is configured. The card adapts to your data.
-
-Future style packs (Editorial, Cockpit, Brutalist) will reuse the same component architecture with different visual languages.
+> These are honest estimates from a developer with limited weekly hours. Timelines will slip. The free cards will ship.
 
 ---
 
 ## Development
 
-If you want to build from source, modify the card, or contribute:
+If you want to build from source, modify cards, or contribute:
 
 ```bash
 git clone https://github.com/maurice198444/layr.git
@@ -237,11 +184,11 @@ npm run build       # produces dist/layr.js
 npm run deploy      # builds + copies to your HA mount
 ```
 
-See [`SETUP.md`](SETUP.md) for the full development workflow including hot-reload, deploy paths, and troubleshooting.
+See [`SETUP.md`](SETUP.md) for the full development workflow.
 
 ### Contributing
 
-Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). For bug reports and feature requests, open an issue with the appropriate template.
+Contributions welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). For bug reports and feature requests, use the appropriate issue template.
 
 ---
 
