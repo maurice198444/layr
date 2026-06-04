@@ -13,6 +13,9 @@ Thumbs.db
 !.vscode/settings.json
 !.vscode/extensions.json
 
+# Howtos
+REPO_SETUP.md
+
 # Logs
 *.log
 npm-debug.log*

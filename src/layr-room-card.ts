@@ -6,7 +6,7 @@
  * conditionally based on which entities you set in YAML.
  *
  * Author: Maurice Stockfleth
- * Repository: github.com/maurice198444/layr-cards
+ * Repository: github.com/maurice198444/layr
  */
 
 import { type HomeAssistant, type LovelaceCardConfig } from 'custom-card-helpers';

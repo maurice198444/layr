@@ -23,7 +23,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/maurice198444/layr-cards.git"
+    "url": "https://github.com/maurice198444/layr.git"
   },
   "dependencies": {
     "custom-card-helpers": "^1.9.0",
