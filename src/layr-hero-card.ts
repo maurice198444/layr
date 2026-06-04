@@ -409,3 +409,9 @@ window.customCards.push({
   description: 'Featured value display with optional sparkline, in the Monolith aesthetic',
   preview: true,
 });
+
+console.info(
+  '%c LAYR-HERO-CARD %c v0.1.0 ',
+  'color: white; background: #b8743a; font-weight: bold;',
+  'color: #b8743a; background: white; font-weight: bold;',
+);

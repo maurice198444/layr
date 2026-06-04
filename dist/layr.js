@@ -1,4 +1,4 @@
-const H = globalThis, q = H.ShadowRoot && (H.ShadyCSS === void 0 || H.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, V = Symbol(), Z = /* @__PURE__ */ new WeakMap();
+const U = globalThis, q = U.ShadowRoot && (U.ShadyCSS === void 0 || U.ShadyCSS.nativeShadow) && "adoptedStyleSheets" in Document.prototype && "replace" in CSSStyleSheet.prototype, V = Symbol(), Z = /* @__PURE__ */ new WeakMap();
 let vt = class {
   constructor(t, s, i) {
     if (this._$cssResult$ = !0, i !== V) throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");
@@ -27,7 +27,7 @@ const Et = (e) => new vt(typeof e == "string" ? e : e + "", void 0, V), W = (e, 
 }, Mt = (e, t) => {
   if (q) e.adoptedStyleSheets = t.map((s) => s instanceof CSSStyleSheet ? s : s.styleSheet);
   else for (const s of t) {
-    const i = document.createElement("style"), r = H.litNonce;
+    const i = document.createElement("style"), r = U.litNonce;
     r !== void 0 && i.setAttribute("nonce", r), i.textContent = s.cssText, e.appendChild(i);
   }
 }, J = q ? (e) => e : (e) => e instanceof CSSStyleSheet ? ((t) => {
@@ -35,7 +35,7 @@ const Et = (e) => new vt(typeof e == "string" ? e : e + "", void 0, V), W = (e, 
   for (const i of t.cssRules) s += i.cssText;
   return Et(s);
 })(e) : e;
-const { is: Pt, defineProperty: Ot, getOwnPropertyDescriptor: Tt, getOwnPropertyNames: Rt, getOwnPropertySymbols: Ut, getPrototypeOf: Ht } = Object, N = globalThis, tt = N.trustedTypes, Bt = tt ? tt.emptyScript : "", Lt = N.reactiveElementPolyfillSupport, M = (e, t) => e, B = { toAttribute(e, t) {
+const { is: Pt, defineProperty: Ot, getOwnPropertyDescriptor: Tt, getOwnPropertyNames: Rt, getOwnPropertySymbols: Ht, getPrototypeOf: Ut } = Object, N = globalThis, tt = N.trustedTypes, Bt = tt ? tt.emptyScript : "", Lt = N.reactiveElementPolyfillSupport, M = (e, t) => e, B = { toAttribute(e, t) {
   switch (t) {
     case Boolean:
       e = e ? Bt : null;
@@ -94,13 +94,13 @@ let $ = class extends HTMLElement {
   }
   static _$Ei() {
     if (this.hasOwnProperty(M("elementProperties"))) return;
-    const t = Ht(this);
+    const t = Ut(this);
     t.finalize(), t.l !== void 0 && (this.l = [...t.l]), this.elementProperties = new Map(t.elementProperties);
   }
   static finalize() {
     if (this.hasOwnProperty(M("finalized"))) return;
     if (this.finalized = !0, this._$Ei(), this.hasOwnProperty(M("properties"))) {
-      const s = this.properties, i = [...Rt(s), ...Ut(s)];
+      const s = this.properties, i = [...Rt(s), ...Ht(s)];
       for (const r of i) this.createProperty(r, s[r]);
     }
     const t = this[Symbol.metadata];
@@ -279,8 +279,8 @@ class T {
     for (; (r = b.nextNode()) !== null && l.length < h; ) {
       if (r.nodeType === 1) {
         if (r.hasAttributes()) for (const d of r.getAttributeNames()) if (d.endsWith(mt)) {
-          const g = u[o++], f = r.getAttribute(d).split(v), U = /([.?@])?(.*)/.exec(g);
-          l.push({ type: 1, index: n, name: U[2], strings: f, ctor: U[1] === "." ? jt : U[1] === "?" ? qt : U[1] === "@" ? Vt : I }), r.removeAttribute(d);
+          const g = u[o++], f = r.getAttribute(d).split(v), H = /([.?@])?(.*)/.exec(g);
+          l.push({ type: 1, index: n, name: H[2], strings: f, ctor: H[1] === "." ? jt : H[1] === "?" ? qt : H[1] === "@" ? Vt : I }), r.removeAttribute(d);
         } else d.startsWith(v) && (l.push({ type: 6, index: n }), r.removeAttribute(d));
         if (yt.test(r.tagName)) {
           const d = r.textContent.split(v), g = d.length - 1;
@@ -2136,6 +2136,11 @@ window.customCards.push({
   description: "Featured value display with optional sparkline, in the Monolith aesthetic",
   preview: !0
 });
+console.info(
+  "%c LAYR-HERO-CARD %c v0.1.0 ",
+  "color: white; background: #b8743a; font-weight: bold;",
+  "color: #b8743a; background: white; font-weight: bold;"
+);
 export {
   A as LayrHeroCard,
   _ as LayrRoomCard
